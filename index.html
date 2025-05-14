@@ -61,15 +61,28 @@
       text-decoration: underline;
     }
 
+    .button-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
     .section-toggle {
+      width: 90%;
+      max-width: 500px;
+      aspect-ratio: 5 / 1;
+      font-size: 18px;
       background: #007BFF;
       color: white;
-      font-size: 18px;
-      padding: 12px 20px;
-      margin: 10px;
       border: none;
       border-radius: 8px;
       cursor: pointer;
+    }
+
+    .section-toggle:hover {
+      background-color: #0056b3;
     }
 
     .footer {
@@ -90,12 +103,10 @@
   </style>
 
   <script>
-    // Hide from bots
     if (/bot|crawl|spider|preview/i.test(navigator.userAgent)) {
       window.location.href = "https://google.com";
     }
 
-    // Section toggler
     function showSection(id) {
       document.querySelectorAll(".section").forEach(s => s.style.display = "none");
       const el = document.getElementById(id + "-section");
@@ -124,7 +135,7 @@
   </p>
 
   <!-- Toggle buttons -->
-  <div>
+  <div class="button-container">
     <button class="section-toggle" onclick="showSection('retail')">Retail</button>
     <button class="section-toggle" onclick="showSection('commercial')">Commercial</button>
     <button class="section-toggle" onclick="showSection('parts')">Parts</button>
