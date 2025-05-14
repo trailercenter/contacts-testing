@@ -33,19 +33,48 @@
       margin-right: auto;
     }
 
-    .section {
-      background: #fff;
-      border-radius: 12px;
-      margin: 15px auto;
-      padding: 20px;
+    .section-wrapper {
+      width: 100%;
       max-width: 600px;
+      margin: 0 auto 20px;
+    }
+
+    .section-toggle {
+      width: 90%;
+      max-width: 500px;
+      aspect-ratio: 5 / 1;
+      font-size: 18px;
+      background: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin: 0 auto;
+    }
+
+    .section-toggle:hover {
+      background-color: #0056b3;
+    }
+
+    .section {
+      overflow: hidden;
+      max-height: 0;
+      transition: max-height 0.4s ease, padding 0.4s ease;
+      background: #fff;
+      margin-top: 10px;
+      padding: 0 20px;
+      border-radius: 0 0 12px 12px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      display: none;
+    }
+
+    .section.open {
+      max-height: 300px;
+      padding: 20px;
     }
 
     .section h2 {
-      margin-top: 0;
       font-size: 22px;
+      margin: 0 0 10px;
       color: #0056b3;
     }
 
@@ -59,30 +88,6 @@
 
     .contact-link:hover {
       text-decoration: underline;
-    }
-
-    .button-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 20px;
-    }
-
-    .section-toggle {
-      width: 90%;
-      max-width: 500px;
-      aspect-ratio: 5 / 1;
-      font-size: 18px;
-      background: #007BFF;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-
-    .section-toggle:hover {
-      background-color: #0056b3;
     }
 
     .footer {
@@ -107,16 +112,26 @@
       window.location.href = "https://google.com";
     }
 
-    function showSection(id) {
-      document.querySelectorAll(".section").forEach(s => s.style.display = "none");
-      const el = document.getElementById(id + "-section");
-      if (el) el.style.display = "block";
+    function toggleSection(id) {
+      const sections = document.querySelectorAll(".section");
+      sections.forEach(section => {
+        if (section.id === id + "-section") {
+          section.classList.toggle("open");
+        } else {
+          section.classList.remove("open");
+        }
+      });
     }
 
     window.onload = () => {
       const params = new URLSearchParams(window.location.search);
       const section = params.get("section");
-      if (section) showSection(section);
+      if (section) {
+        document.getElementById(section + "-section")?.classList.add("open");
+        setTimeout(() => {
+          document.getElementById(section + "-section")?.scrollIntoView({ behavior: "smooth", block: "center" });
+        }, 300);
+      }
     }
   </script>
 </head>
@@ -134,38 +149,39 @@
     Choose the department you’d like to contact. Tap a button below to view details.
   </p>
 
-  <!-- Toggle buttons -->
-  <div class="button-container">
-    <button class="section-toggle" onclick="showSection('retail')">Retail</button>
-    <button class="section-toggle" onclick="showSection('commercial')">Commercial</button>
-    <button class="section-toggle" onclick="showSection('parts')">Parts</button>
+  <div class="section-wrapper">
+    <!-- Retail -->
+    <button class="section-toggle" onclick="toggleSection('retail')">Retail</button>
+    <div id="retail-section" class="section">
+      <h2>Retail Sales</h2>
+      <p>Contact for general trailer sales and inquiries.</p>
+      <a href="tel:+14076392812" class="contact-link">📞 Call Randy</a>
+      <a href="mailto:commsales@attrailercenter.com" class="contact-link">✉️ Email Randy</a>
+    </div>
   </div>
 
-  <!-- Retail -->
-  <div id="retail-section" class="section">
-    <h2>Retail Sales</h2>
-    <p>Contact for general trailer sales and inquiries.</p>
-    <a href="tel:+14076392812" class="contact-link">📞 Call Randy</a>
-    <a href="mailto:commsales@attrailercenter.com" class="contact-link">✉️ Email Randy</a>
+  <div class="section-wrapper">
+    <!-- Commercial -->
+    <button class="section-toggle" onclick="toggleSection('commercial')">Commercial</button>
+    <div id="commercial-section" class="section">
+      <h2>Commercial Sales</h2>
+      <p>Contact for commercial fleet or business trailer needs.</p>
+      <a href="tel:+14076392812" class="contact-link">📞 Call Randy</a>
+      <a href="mailto:commsales@attrailercenter.com" class="contact-link">✉️ Email Randy</a>
+    </div>
   </div>
 
-  <!-- Commercial -->
-  <div id="commercial-section" class="section">
-    <h2>Commercial Sales</h2>
-    <p>Contact for commercial fleet or business trailer needs.</p>
-    <a href="tel:+14076392812" class="contact-link">📞 Call Randy</a>
-    <a href="mailto:commsales@attrailercenter.com" class="contact-link">✉️ Email Randy</a>
+  <div class="section-wrapper">
+    <!-- Parts -->
+    <button class="section-toggle" onclick="toggleSection('parts')">Parts</button>
+    <div id="parts-section" class="section">
+      <h2>Parts Department</h2>
+      <p>Need trailer parts or service? Contact our parts specialists.</p>
+      <a href="tel:+14076392812" class="contact-link">📞 Call Randy</a>
+      <a href="mailto:commsales@attrailercenter.com" class="contact-link">✉️ Email Randy</a>
+    </div>
   </div>
 
-  <!-- Parts -->
-  <div id="parts-section" class="section">
-    <h2>Parts Department</h2>
-    <p>Need trailer parts or service? Contact our parts specialists.</p>
-    <a href="tel:+14076392812" class="contact-link">📞 Call Randy</a>
-    <a href="mailto:commsales@attrailercenter.com" class="contact-link">✉️ Email Randy</a>
-  </div>
-
-  <!-- Footer -->
   <div class="footer">
     Looking for trailers? <a href="https://www.attrailercenter.com/" target="_blank">Browse our full selection at attrailercenter.com →</a>
   </div>
