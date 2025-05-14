@@ -126,38 +126,50 @@
     }
   </style>
 
-  <script>
-    if (/bot|crawl|spider|preview/i.test(navigator.userAgent)) {
-      window.location.href = "https://google.com";
-    }
+ <script>
+  if (/bot|crawl|spider|preview/i.test(navigator.userAgent)) {
+    window.location.href = "https://google.com";
+  }
 
-    function toggleSection(id) {
-      const sections = document.querySelectorAll(".section");
-      const buttons = document.querySelectorAll(".section-toggle");
+  function toggleSection(id) {
+    const section = document.getElementById(id + "-section");
+    const wasOpen = section.classList.contains("open");
+    const buttons = document.querySelectorAll(".section-toggle");
 
-      sections.forEach(section => {
-        const isTarget = section.id === id + "-section";
-        section.classList.toggle("open", isTarget && !section.classList.contains("open"));
-        if (!isTarget) section.classList.remove("open");
+    // Close all sections
+    document.querySelectorAll(".section").forEach(s => s.classList.remove("open"));
+    buttons.forEach(btn => btn.classList.remove("active"));
+
+    // If it was already open, leave it closed
+    if (!wasOpen) {
+      section.classList.add("open");
+      buttons.forEach(btn => {
+        if (btn.getAttribute("onclick").includes(id)) {
+          btn.classList.add("active");
+        }
       });
-
-      buttons.forEach(button => {
-        const isTarget = button.getAttribute("onclick").includes(id);
-        button.classList.toggle("active", isTarget && !document.getElementById(id + "-section").classList.contains("open"));
-      });
     }
+  }
 
-    window.onload = () => {
-      const params = new URLSearchParams(window.location.search);
-      const section = params.get("section");
-      if (section) {
-        toggleSection(section);
-        setTimeout(() => {
-          document.getElementById(section + "-section")?.scrollIntoView({ behavior: "smooth", block: "center" });
-        }, 300);
-      }
+  window.onload = () => {
+    const params = new URLSearchParams(window.location.search);
+    const section = params.get("section");
+
+    if (section) {
+      const sectionEl = document.getElementById(section + "-section");
+      const buttonEl = Array.from(document.querySelectorAll(".section-toggle"))
+        .find(btn => btn.getAttribute("onclick")?.includes(section));
+
+      if (sectionEl) sectionEl.classList.add("open");
+      if (buttonEl) buttonEl.classList.add("active");
+
+      setTimeout(() => {
+        sectionEl?.scrollIntoView({ behavior: "smooth", block: "center" });
+      }, 300);
     }
-  </script>
+  }
+</script>
+
 </head>
 <body>
 
